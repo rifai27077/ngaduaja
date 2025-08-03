@@ -1,46 +1,55 @@
-<!-- resources/views/auth/login.blade.php -->
 @extends('layouts.app')
 
 @section('content')
 
 @include('includes.navbar')
 
-<section class="min-h-screen pt-28 bg-white flex items-center justify-center px-4">
-    <div class="bg-white shadow-md rounded-md w-full max-w-md p-8">
-        <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Masuk</h2>
+<section class="pt-28 md:pt-32 pb-20 bg-white text-center relative overflow-hidden">
+    <div class="relative z-10 max-w-md mx-auto px-4">
+        <!-- Card Login -->
+        <div class="bg-white shadow-md rounded-md p-6 text-left">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Masuk</h2>
 
-        <form action="{{ route('login') }}" method="POST" class="space-y-5">
-            @csrf
+            <!-- Form Login -->
+            <form method="POST" action="{{ route('login') }}" class="space-y-4">
+                @csrf
 
-            <div>
-                <label for="nik" class="block text-sm text-gray-700 mb-1">NIK</label>
-                <input type="text" id="nik" name="nik" required
-                    class="w-full border-b border-gray-300 focus:outline-none focus:border-green-600 px-1 py-2">
-            </div>
+                <!-- NIK -->
+                <div>
+                    <label for="nik" class="block text-sm font-medium text-gray-700">NIK</label>
+                    <input id="nik" type="text" name="nik" value="{{ old('nik') }}"
+                        class="mt-1 w-full px-3 py-2 border @error('nik') border-red-500 @else border-gray-300 @enderror rounded-md text-sm focus:ring-green-500 focus:border-green-500 outline-none" 
+                        placeholder="Masukkan NIK" required autofocus>
+                    @error('nik')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div>
-                <label for="password" class="block text-sm text-gray-700 mb-1">Password</label>
-                <input type="password" id="password" name="password" required
-                    class="w-full border-b border-gray-300 focus:outline-none focus:border-green-600 px-1 py-2">
-            </div>
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input id="password" type="password" name="password"
+                        class="mt-1 w-full px-3 py-2 border @error('password') border-red-500 @else border-gray-300 @enderror rounded-md text-sm focus:ring-green-500 focus:border-green-500 outline-none" 
+                        placeholder="Masukkan Password" required>
+                    @error('password')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="text-right text-sm">
-                <a href="#" class="text-gray-500 hover:text-green-600 transition">Lupa password?</a>
-            </div>
+                <!-- Tombol Masuk -->
+                <button type="submit" 
+                    class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-medium transition">
+                    Masuk
+                </button>
+            </form>
 
-            <button type="submit"
-                class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md transition-all duration-300">
-                Masuk
-            </button>
-
-            <p class="text-center text-sm text-gray-600">
-                Belum memiliki akun?
-                <a href="{{ route('register') }}" class="text-green-600 hover:underline">Daftar</a>
+            <!-- Link Daftar -->
+            <p class="mt-4 text-center text-sm text-gray-600">
+                Belum memiliki akun? 
+                <a href="{{ route('register') }}" class="text-green-600 hover:underline font-medium">Daftar</a>
             </p>
-        </form>
+        </div>
     </div>
 </section>
-
-@include('includes.footer')
 
 @endsection

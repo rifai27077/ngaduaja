@@ -1,49 +1,82 @@
-<!-- resources/views/auth/register.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
-<section class="min-h-screen flex flex-col justify-center items-center bg-white px-4 pt-32">
-    <div class="bg-white w-full max-w-md p-8 shadow-md rounded-md">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Buat <span class="text-green-600">Akun</span></h2>
+@include('includes.navbar')
 
-        <form action="{{ route('register.store') }}" method="POST" class="space-y-4">
-            @csrf
-            <div>
-                <input type="text" name="nik" placeholder="NIK" required
-                       class="w-full border-b border-gray-300 focus:outline-none focus:border-green-600 py-2 placeholder:text-gray-500">
-            </div>
+<section class="pt-28 md:pt-32 pb-20 bg-white text-center relative overflow-hidden">
+    <div class="relative z-10 max-w-md mx-auto px-4">
+        <!-- Card Register -->
+        <div class="bg-white shadow-md rounded-md p-6 text-left">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">
+                Buat <span class="text-green-600">Akun</span>
+            </h2>
 
-            <div>
-                <input type="text" name="nama" placeholder="Nama" required
-                       class="w-full border-b border-gray-300 focus:outline-none focus:border-green-600 py-2 placeholder:text-gray-500">
-            </div>
+            <!-- Form -->
+            <form method="POST" action="{{ route('register') }}" class="space-y-4">
+                @csrf
 
-            <div>
-                <input type="text" name="username" placeholder="Username" required
-                       class="w-full border-b border-gray-300 focus:outline-none focus:border-green-600 py-2 placeholder:text-gray-500">
-            </div>
+                <!-- NIK -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">NIK</label>
+                    <input type="text" name="nik" value="{{ old('nik') }}" 
+                        class="mt-1 w-full px-3 py-2 border @error('nik') border-red-500 @else border-gray-300 @enderror rounded-md text-sm focus:ring-green-500 focus:border-green-500" required>
+                    @error('nik')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div>
-                <input type="password" name="password" placeholder="Password" required
-                       class="w-full border-b border-gray-300 focus:outline-none focus:border-green-600 py-2 placeholder:text-gray-500">
-            </div>
+                <!-- Nama -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Nama</label>
+                    <input type="text" name="nama" value="{{ old('nama') }}"
+                        class="mt-1 w-full px-3 py-2 border @error('nama') border-red-500 @else border-gray-300 @enderror rounded-md text-sm focus:ring-green-500 focus:border-green-500" required>
+                    @error('nama')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div>
-                <input type="text" name="telp" placeholder="Telepon" required
-                       class="w-full border-b border-gray-300 focus:outline-none focus:border-green-600 py-2 placeholder:text-gray-500">
-            </div>
+                <!-- Username -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" name="username" value="{{ old('username') }}"
+                        class="mt-1 w-full px-3 py-2 border @error('username') border-red-500 @else border-gray-300 @enderror rounded-md text-sm focus:ring-green-500 focus:border-green-500" required>
+                    @error('username')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <button type="submit"
-                    class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition">
-                Daftar
-            </button>
-        </form>
+                <!-- Password -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" name="password"
+                        class="mt-1 w-full px-3 py-2 border @error('password') border-red-500 @else border-gray-300 @enderror rounded-md text-sm focus:ring-green-500 focus:border-green-500" required>
+                    @error('password')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-        <p class="text-center text-sm text-gray-600 mt-4">
-            Sudah punya akun? 
-            <a href="{{ route('login') }}" class="text-green-600 font-medium hover:underline">Login</a>
-        </p>
+                <!-- Telepon -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Telepon</label>
+                    <input type="text" name="telp" value="{{ old('telp') }}"
+                        class="mt-1 w-full px-3 py-2 border @error('telp') border-red-500 @else border-gray-300 @enderror rounded-md text-sm focus:ring-green-500 focus:border-green-500" required>
+                    @error('telp')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Tombol Daftar -->
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-medium transition">
+                    Daftar
+                </button>
+            </form>
+
+            <!-- Link Login -->
+            <p class="mt-4 text-center text-sm text-gray-600">
+                Sudah punya akun? 
+                <a href="{{ route('login') }}" class="text-green-600 hover:underline font-medium">Login</a>
+            </p>
+        </div>
     </div>
 </section>
 @endsection
