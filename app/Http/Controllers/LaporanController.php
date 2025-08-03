@@ -16,11 +16,9 @@ class LaporanController extends Controller
         ]);
 
         // Upload foto jika ada
-        $namaFile = null;
+        $foto = null;
         if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $namaFile = time().'_'.$foto->getClientOriginalName();
-            $foto->move(public_path('uploads'), $namaFile); // ✅ disimpan di public/uploads
+            $foto = $request->file('foto')->store('uploads', 'public');
         }
 
         // Simpan data ke tabel pengaduan
@@ -28,7 +26,7 @@ class LaporanController extends Controller
             'tgl_pengaduan' => date('Y-m-d'),
             'nik' => Auth::user()->nik,
             'isi_laporan' => $request->isi_laporan,
-            'foto' => $namaFile,
+            'foto' => $foto,
             'status' => '0',
             'created_at' => now(),
         ]);
