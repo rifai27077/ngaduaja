@@ -24,7 +24,7 @@
             Laporkan Masalah,<br>
             Bantu Wujudkan Pelayanan Publik yang Lebih Baik
         </h1>
-        <a href="/login" class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-medium text-sm transition-all duration-300">
+        <a href="/lapor" class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-medium text-sm transition-all duration-300">
             Laporkan Sekarang
         </a>
     </div>
@@ -35,15 +35,15 @@
     <div class="absolute inset-0 bg-white/0 backdrop-blur-md z-0"></div>
     <div class="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto text-center text-sm md:text-base font-medium text-gray-700">
         <div class="bg-white shadow-sm rounded-md p-4 hover:shadow-md transition">
-            <span class="text-yellow-500 text-xl md:text-2xl font-bold block">200+</span>
+            <span class="text-yellow-500 text-xl md:text-2xl font-bold block">{{ $totalLaporan }}+</span>
             Total Laporan
         </div>
         <div class="bg-white shadow-sm rounded-md p-4 hover:shadow-md transition">
-            <span class="text-purple-600 text-xl md:text-2xl font-bold block">550+</span>
+            <span class="text-purple-600 text-xl md:text-2xl font-bold block">{{ $totalPengguna }}+</span>
             Jumlah Pengguna
         </div>
         <div class="bg-white shadow-sm rounded-md p-4 hover:shadow-md transition">
-            <span class="text-cyan-600 text-xl md:text-2xl font-bold block">95%</span>
+            <span class="text-cyan-600 text-xl md:text-2xl font-bold block">{{ $persenSelesai }}%</span>
             Tanggapan Diselesaikan
         </div>
     </div>
@@ -105,42 +105,57 @@
         </p>
     </div>
 
-    <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 relative z-10">
-        @php
-            $laporans = [
-                ['nama'=>'And***', 'tanggal'=>'28 Jul 2025', 'isi'=>'Jalan rusak parah di sekitar pasar membuat sulit akses kendaraan.', 'status'=>'Belum Ditanggapi'],
-                ['nama'=>'Sul***', 'tanggal'=>'27 Jul 2025', 'isi'=>'Sampah menumpuk di area taman kota dan belum diangkut selama 1 minggu.', 'status'=>'Proses'],
-                ['nama'=>'Rin***', 'tanggal'=>'25 Jul 2025', 'isi'=>'Lampu jalan di sekitar perumahan mati total sejak 3 hari lalu.', 'status'=>'Selesai'],
-                ['nama'=>'Bai***', 'tanggal'=>'23 Jul 2025', 'isi'=>'Saluran air tersumbat menyebabkan banjir kecil ketika hujan.', 'status'=>'Belum Ditanggapi'],
-            ];
-            $statusColor = [
-                'Belum Ditanggapi' => 'bg-gray-200 text-gray-700',
-                'Proses' => 'bg-yellow-100 text-yellow-700',
-                'Selesai' => 'bg-green-100 text-green-700',
-            ];
-        @endphp
+    <div class="max-w-6xl mx-auto px-4 relative z-10">
+        <div class="grid gap-6 
+            grid-cols-1 
+            sm:grid-cols-{{ count($laporans) >= 2 ? 2 : 1 }} 
+            md:grid-cols-{{ count($laporans) >= 3 ? 3 : count($laporans) }} 
+            lg:grid-cols-{{ count($laporans) >= 4 ? 4 : count($laporans) }} 
+            {{ count($laporans) < 4 ? 'justify-center' : '' }}">
+            
+            @php
+                $statusMap = [
+                    0 => 'Belum Ditanggapi',
+                    'proses' => 'Proses',
+                    'selesai' => 'Selesai'
+                ];
 
-        @foreach ($laporans as $laporan)
-        <div class="bg-white p-4 rounded-md shadow-sm hover:shadow-md transition-all duration-300">
-            <h4 class="font-semibold text-gray-800 mb-1">{{ $laporan['nama'] }}</h4>
-            <p class="text-xs text-gray-500 mb-2">{{ $laporan['tanggal'] }}</p>
-            <p class="text-sm text-gray-600 mb-3">{{ $laporan['isi'] }}</p>
-            <span class="inline-block px-3 py-1 text-xs rounded-full {{ $statusColor[$laporan['status']] }}">
-                {{ $laporan['status'] }}
-            </span>
+                $statusColor = [
+                    'Belum Ditanggapi' => 'bg-gray-200 text-gray-700 border border-gray-300',
+                    'Proses' => 'bg-yellow-100 text-yellow-800 border border-yellow-300',
+                    'Selesai' => 'bg-green-100 text-green-800 border border-green-400',
+                ];
+            @endphp
+
+            @forelse ($laporans as $laporan)
+                @php
+                    $statusText = $statusMap[$laporan->status] ?? ucfirst($laporan->status);
+                @endphp
+
+                <div class="bg-white p-4 rounded-md shadow-sm hover:shadow-md transition-all duration-300 w-full sm:w-64">
+                    <h4 class="font-semibold text-gray-800 mb-1">{{ substr($laporan->masyarakat->nama, 0, 3) . '***' }}</h4>
+                    <p class="text-xs text-gray-500 mb-2">{{ $laporan->created_at->format('d M Y') }}</p>
+                    <p class="text-sm text-gray-600 mb-3">{{ $laporan->isi_laporan }}</p>
+                    
+                    <span class="inline-flex items-center gap-1 px-3 py-1 text-xs rounded-full font-medium {{ $statusColor[$statusText] ?? 'bg-gray-200 text-gray-700' }}">
+                        @if($statusText === 'Proses')
+                            <i class="fas fa-spinner animate-spin"></i>
+                        @elseif($statusText === 'Selesai')
+                            <i class="fas fa-check-circle"></i>
+                        @endif
+                        {{ $statusText }}
+                    </span>
+                </div>
+            @empty
+                <p class="text-gray-500 text-center col-span-full">Belum ada laporan terbaru.</p>
+            @endforelse
+
         </div>
-        @endforeach
-    </div>
-
-    <div class="text-center mt-8">
-        <a href="#" class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full text-sm transition-all">
-            Lihat Semua Laporan
-        </a>
     </div>
 </section>
 
 <!-- FAQ -->
-<section class="relative bg-gray-50 py-16 overflow-hidden">
+<section id="faq" class="relative bg-gray-50 py-16 overflow-hidden">
     @foreach ($blurs as $index => $blur)
         <div class="absolute {{ $blur['pos'] }} w-44 h-44 {{ $blur['color'] }}
             rounded-full opacity-30 blur-3xl animate-floating {{ $delays[$index % count($delays)] }} z-0"></div>
