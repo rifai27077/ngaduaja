@@ -22,4 +22,13 @@ class Pengaduan extends Model
     {
         return $this->belongsTo(Masyarakat::class, 'nik', 'nik');
     }
+
+    public function petugas()
+    {
+        return $this->belongsTo(Petugas::class, 'id_petugas');
+    }
+
+    public function tanggapan() {
+        return $this->hasOne(Tanggapan::class, 'id_pengaduan');
+    }
 }

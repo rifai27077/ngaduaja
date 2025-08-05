@@ -40,6 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'petugas' => [
+            'driver' => 'session',
+            'provider' => 'petugas',
+        ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'petugas',
+        ],
     ],
 
     /*
@@ -63,6 +73,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\Masyarakat::class),
+        ],
+
+        'petugas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Petugas::class,
         ],
 
         // 'users' => [

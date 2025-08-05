@@ -15,13 +15,11 @@ class LaporanController extends Controller
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Upload foto jika ada
         $foto = null;
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto')->store('uploads', 'public');
         }
 
-        // Simpan data ke tabel pengaduan
         Pengaduan::create([
             'tgl_pengaduan' => date('Y-m-d'),
             'nik' => Auth::user()->nik,
