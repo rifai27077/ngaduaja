@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use App\Models\Tanggapan;
 use App\Models\Pengaduan;
 use Illuminate\Support\Facades\Auth;
 
-class VerifikasiController extends Controller
+class PetugasVerifikasiController extends Controller
 {
     public function index(Request $request)
     {
@@ -25,13 +25,12 @@ class VerifikasiController extends Controller
             });
         }
 
-        // Filter tanggal
         if ($request->tanggal) {
             $query->whereDate('tgl_pengaduan', $request->tanggal);
         }
 
         $pengaduan = $query->get();
-        return view('admin.pengaduan.index', compact('pengaduan'));
+        return view('petugas.pengaduan.index', compact('pengaduan'));
     }
 
 
@@ -49,8 +48,8 @@ class VerifikasiController extends Controller
             ['id_pengaduan' => $id],
             [
                 'tgl_tanggapan' => now()->toDateString(),
-                'tanggapan' => $pengaduan->tanggapan->tanggapan ?? '',
-                'id_petugas' => Auth::guard('admin')->user()->id_petugas,
+                'tanggapan' => $pengaduan->tanggapan->tanggapan ?? '', // bisa diubah jadi default kosong
+                'id_petugas' => Auth::guard('petugas')->user()->id_petugas,
             ]
         );
 
@@ -64,14 +63,17 @@ class VerifikasiController extends Controller
     {
         $request->validate([
             'tanggapan' => 'required|string',
-            'status' => 'required|in:proses,selesai',
         ]);
 
         $pengaduan = Pengaduan::findOrFail($id);
 
-        $petugas = auth('admin')->user() ?? auth('petugas')->user();
+        if ($pengaduan->status === 'selesai') {
+            return back()->withErrors(['msg' => 'Laporan ini sudah selesai dan tidak dapat diberi tanggapan.']);
+        }
+
+        $petugas = auth('petugas')->user();
         if (!$petugas) {
-            return back()->withErrors(['msg' => 'Anda harus login sebagai admin atau petugas untuk memberikan tanggapan.']);
+            return back()->withErrors(['msg' => 'Anda harus login sebagai petugas untuk memberikan tanggapan.']);
         }
 
         Tanggapan::updateOrCreate(
@@ -82,11 +84,11 @@ class VerifikasiController extends Controller
                 'id_petugas' => $petugas->id_petugas,
             ]
         );
+        if ($pengaduan->status === '0') {
+            $pengaduan->status = 'proses';
+            $pengaduan->save();
+        }
 
-        // Update status sesuai input
-        $pengaduan->status = $request->status;
-        $pengaduan->save();
-
-        return redirect()->route('admin.verifikasi.index')->with('success', 'Tanggapan dan status berhasil disimpan.');
+        return redirect()->route('petugas.verifikasi.index')->with('success', 'Tanggapan berhasil disimpan.');
     }
 }

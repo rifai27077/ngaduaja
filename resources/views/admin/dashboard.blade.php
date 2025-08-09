@@ -59,7 +59,7 @@
                         <td class="py-3 px-4">
                             <span class="text-white text-xs px-3 py-1 rounded-full 
                                 {{ $laporan->status == 'selesai' ? 'bg-green-500' : ($laporan->status == 'proses' ? 'bg-yellow-500' : 'bg-red-500') }}">
-                                {{ $laporan->status == '0' ? 'Belum Diverifikasi' : ucfirst($laporan->status) }}
+                                {{ $laporan->status == '0' ? 'Belum Ditanggapi' : ucfirst($laporan->status) }}
                             </span>
                         </td>
                     </tr>

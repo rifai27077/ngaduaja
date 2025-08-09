@@ -11,7 +11,7 @@ class PetugasLoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.petugas-login'); // Buat view ini di resources/views/auth/
+        return view('auth.petugas-login');
     }
 
     public function login(Request $request)
@@ -21,15 +21,15 @@ class PetugasLoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Ambil data petugas dengan level petugas
         $petugas = Petugas::where('username', $credentials['username'])
-                            ->where('level', 'petugas')
-                            ->first();
+                        ->where('level', 'petugas')
+                        ->first();
 
-        if ($petugas && password_verify($credentials['password'], $petugas->password)) {
-            Auth::guard('petugas')->login($petugas);
+        if ($petugas && $petugas->password === $credentials['password']) {
+            Auth::guard('petugas')->login($petugas); 
             return redirect()->route('petugas.dashboard');
         }
+
 
         return back()->withErrors(['username' => 'Username atau password salah, atau Anda bukan petugas.']);
     }

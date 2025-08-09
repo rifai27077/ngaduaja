@@ -108,7 +108,7 @@
                                     {{ $laporan->status == '0' ? 'Belum Ditanggapi' : ucfirst($laporan->status) }}
                                 </span>
                             </td>
-                            <td class="py-3 px-4">{{ optional(optional($laporan->tanggapan)->petugas)->nama ?? '-' }}</td>
+                            <td class="py-3 px-4">{{ optional(optional($laporan->tanggapan)->petugas)->nama_petugas ?? '-' }}</td>
                             <td class="py-3 px-4 flex gap-2">
                                 <button 
                                     @if($laporan->status == 'selesai') 
@@ -184,6 +184,13 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tanggapan</label>
                         <textarea name="tanggapan" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" required>{{ $laporan->tanggapan->tanggapan ?? '' }}</textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Ubah Status</label>
+                        <select name="status" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" required>
+                            <option value="proses" {{ $laporan->status == 'proses' ? 'selected' : '' }}>Proses</option>
+                            <option value="selesai" {{ $laporan->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                        </select>
                     </div>
                     <div class="flex justify-end gap-2">
                         <button type="button" onclick="document.getElementById('modal-tanggapan-{{ $laporan->id_pengaduan }}').classList.add('hidden')" class="px-4 py-2 text-sm border rounded-md hover:bg-gray-100">Batal</button>
