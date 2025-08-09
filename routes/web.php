@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PetugasController;
-use App\Http\Controllers\Admin\TanggapanController;
 use App\Http\Controllers\Admin\VerifikasiController;
+use App\Http\Controllers\AuthPetugasAdmin\AdminLoginController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -19,22 +20,21 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/lapor', function () {
-        return view('laporan.form');
-    })->name('laporan.form');
-
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('/lapor', fn() => view('laporan.form'))->name('laporan.form');
     Route::post('/lapor', [LaporanController::class, 'store'])->name('laporan.store');
 });
 
-Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminLoginController::class, 'login']);
+Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+Route::prefix('admin')->middleware('auth:admin')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('/petugas', PetugasController::class);
 
     Route::get('/pengaduan', [VerifikasiController::class, 'index'])->name('admin.verifikasi.index');
     Route::get('/pengaduan/{id}', [VerifikasiController::class, 'show'])->name('admin.verifikasi.show');
     Route::put('/pengaduan/{id}', [VerifikasiController::class, 'update'])->name('admin.verifikasi.update');
-
     Route::put('/pengaduan/{id}/tanggapan', [VerifikasiController::class, 'updateTanggapan'])->name('admin.tanggapan.update');
 
     Route::get('/laporan', [DashboardController::class, 'laporan'])->name('admin.laporan.index');

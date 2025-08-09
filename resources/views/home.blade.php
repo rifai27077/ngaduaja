@@ -30,7 +30,6 @@
     </div>
 </section>
 
-<!-- Statistik -->
 <section class="relative bg-transparent py-10 -mt-8 z-20">
     <div class="absolute inset-0 bg-white/0 backdrop-blur-md z-0"></div>
     <div class="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto text-center text-sm md:text-base font-medium text-gray-700">
@@ -49,49 +48,6 @@
     </div>
 </section>
 
-<!-- Cara Kerja -->
-<section id="carakerja" class="bg-gray-50 py-16 relative overflow-hidden">
-    @php
-        $blurs = [
-            ['pos' => 'top-10 left-10', 'color' => 'bg-yellow-200'],
-            ['pos' => 'bottom-10 right-10', 'color' => 'bg-green-200'],
-        ];
-    @endphp
-
-    @foreach ($blurs as $index => $blur)
-        <div class="absolute {{ $blur['pos'] }} w-52 h-52 {{ $blur['color'] }}
-            rounded-full opacity-40 blur-3xl animate-floating {{ $delays[$index % count($delays)] }} z-0"></div>
-    @endforeach
-
-    <div class="text-center mb-12 px-4 relative z-10">
-        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Bagaimana Cara Kerjanya</h2>
-        <p class="text-gray-600 text-sm md:text-base max-w-xl mx-auto">
-            Layanan ini dirancang agar masyarakat dapat menyampaikan keluhan atau saran dengan cepat dan transparan.
-            Ikuti langkah mudah berikut untuk mulai melapor.
-        </p>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto px-4 text-center relative z-10">
-        @php
-        $steps = [
-            ['img' => 'step1.png', 'title' => 'Daftar Akun', 'desc' => 'Buat akun untuk mengakses layanan dan melapor dengan aman.'],
-            ['img' => 'step2.png', 'title' => 'Kirim Laporan', 'desc' => 'Isi formulir laporan lengkap dengan detail masalah.'],
-            ['img' => 'step3.png', 'title' => 'Verifikasi & Tanggapan', 'desc' => 'Petugas memverifikasi laporan dan memberikan tanggapan.'],
-            ['img' => 'step4.png', 'title' => 'Pantau Proses', 'desc' => 'Pantau perkembangan laporan melalui dashboard.'],
-        ];
-        @endphp
-
-        @foreach ($steps as $step)
-        <div class="bg-white p-5 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-transform duration-300">
-            <img src="/img/{{ $step['img'] }}" alt="{{ $step['title'] }}" class="h-20 mx-auto mb-4">
-            <h4 class="font-semibold text-gray-800 mb-1">{{ $step['title'] }}</h4>
-            <p class="text-sm text-gray-600">{{ $step['desc'] }}</p>
-        </div>
-        @endforeach
-    </div>
-</section>
-
-<!-- Laporan Terbaru -->
 <section id="laporanterbaru" class="bg-white py-16 relative overflow-hidden">
     @foreach ($blurs as $index => $blur)
         <div class="absolute {{ $blur['pos'] }} w-44 h-44 {{ $blur['color'] }}
@@ -154,7 +110,47 @@
     </div>
 </section>
 
-<!-- FAQ -->
+<section id="carakerja" class="bg-gray-50 py-16 relative overflow-hidden">
+    @php
+        $blurs = [
+            ['pos' => 'top-10 left-10', 'color' => 'bg-yellow-200'],
+            ['pos' => 'bottom-10 right-10', 'color' => 'bg-green-200'],
+        ];
+    @endphp
+
+    @foreach ($blurs as $index => $blur)
+        <div class="absolute {{ $blur['pos'] }} w-52 h-52 {{ $blur['color'] }}
+            rounded-full opacity-40 blur-3xl animate-floating {{ $delays[$index % count($delays)] }} z-0"></div>
+    @endforeach
+
+    <div class="text-center mb-12 px-4 relative z-10">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Bagaimana Cara Kerjanya</h2>
+        <p class="text-gray-600 text-sm md:text-base max-w-xl mx-auto">
+            Layanan ini dirancang agar masyarakat dapat menyampaikan keluhan atau saran dengan cepat dan transparan.
+            Ikuti langkah mudah berikut untuk mulai melapor.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto px-4 text-center relative z-10">
+        @php
+        $steps = [
+            ['img' => 'step1.png', 'title' => 'Daftar Akun', 'desc' => 'Buat akun untuk mengakses layanan dan melapor dengan aman.'],
+            ['img' => 'step2.png', 'title' => 'Kirim Laporan', 'desc' => 'Isi formulir laporan lengkap dengan detail masalah.'],
+            ['img' => 'step3.png', 'title' => 'Verifikasi & Tanggapan', 'desc' => 'Petugas memverifikasi laporan dan memberikan tanggapan.'],
+            ['img' => 'step4.png', 'title' => 'Pantau Proses', 'desc' => 'Pantau perkembangan laporan.'],
+        ];
+        @endphp
+
+        @foreach ($steps as $step)
+        <div class="bg-white p-5 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-transform duration-300">
+            <img src="/img/{{ $step['img'] }}" alt="{{ $step['title'] }}" class="h-20 mx-auto mb-4">
+            <h4 class="font-semibold text-gray-800 mb-1">{{ $step['title'] }}</h4>
+            <p class="text-sm text-gray-600">{{ $step['desc'] }}</p>
+        </div>
+        @endforeach
+    </div>
+</section>
+
 <section id="faq" class="relative bg-gray-50 py-16 overflow-hidden">
     @foreach ($blurs as $index => $blur)
         <div class="absolute {{ $blur['pos'] }} w-44 h-44 {{ $blur['color'] }}
@@ -166,14 +162,13 @@
             <lottie-player src="{{ asset('img/faq.json') }}" background="transparent" speed="1" style="max-height: 300px; width: 100%;" loop autoplay></lottie-player>
         </div>
         <div>
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Pertanyaan yang Sering Ditanyakan</h2>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-7">Pertanyaan yang Sering Ditanyakan</h2>
             <div class="space-y-4">
                 @php
                     $faqs = [
                         ['q'=>'Apakah identitas pelapor akan dirahasiakan?','a'=>'Ya, identitas pelapor dijamin kerahasiaannya dan hanya diketahui oleh petugas yang berwenang.'],
-                        ['q'=>'Siapa yang menangani laporan?','a'=>'Laporan akan diteruskan ke instansi atau petugas yang terkait dengan jenis laporan tersebut.'],
+                        ['q'=>'Siapa yang menangani laporan?','a'=>'Laporan akan diteruskan ke instansi atau petugas yang terkait dengan laporan tersebut.'],
                         ['q'=>'Berapa lama waktu tanggapan?','a'=>'Tanggapan biasanya diberikan dalam waktu maksimal 7 hari kerja setelah laporan diverifikasi.'],
-                        ['q'=>'Apakah bisa melihat status laporan?','a'=>'Ya, Anda dapat memantau status laporan melalui dashboard akun Anda secara real-time.'],
                     ];
                 @endphp
 

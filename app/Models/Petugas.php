@@ -20,6 +20,4 @@ class Petugas extends Authenticatable
         'telp',
         'level',
     ];
-
-    protected $hidden = ['password'];
 }

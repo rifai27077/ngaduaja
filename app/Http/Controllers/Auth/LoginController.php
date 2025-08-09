@@ -22,11 +22,11 @@ class LoginController extends Controller
         ]);
 
         $user = Masyarakat::where('nik', $request->nik)
-            ->where('password', $request->password) // TANPA HASH
+            ->where('password', $request->password)
             ->first();
 
         if ($user) {
-            Auth::login($user); // langsung login user
+            Auth::login($user);
             return redirect('/')->with('success', 'Login berhasil!');
         }
 
