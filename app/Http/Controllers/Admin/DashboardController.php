@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
 use App\Models\Masyarakat;
 use App\Models\Pengaduan;
@@ -18,9 +19,22 @@ class DashboardController extends Controller
         $totalLaporan = Pengaduan::count();
         $laporanDiproses = Pengaduan::where('status', 'proses')->count();
         $laporanSelesai = Pengaduan::where('status', 'selesai')->count();
+        $jumlahNotifikasi = Pengaduan::where('status', '0')->count();
 
-        $laporanTerbaru = Pengaduan::with(['masyarakat', 'tanggapan.petugas'])
-            ->latest()
+        $laporanTerbaru = Pengaduan::with(relations: ['masyarakat', 'tanggapan.petugas'])
+            ->orderBy('tgl_pengaduan', 'desc')
+            ->take(5)
+            ->get();
+
+        $laporanBelum = Pengaduan::with(['masyarakat'])
+            ->where('status', '0')
+            ->latest('tgl_pengaduan')
+            ->take(5)
+            ->get();
+
+        $laporanSudah = Pengaduan::with(['masyarakat', 'tanggapan.petugas'])
+            ->whereIn('status', ['proses', 'selesai'])
+            ->latest('tgl_pengaduan')
             ->take(5)
             ->get();
 
@@ -29,7 +43,10 @@ class DashboardController extends Controller
             'totalLaporan',
             'laporanDiproses',
             'laporanSelesai',
-            'laporanTerbaru'
+            'laporanTerbaru',
+            'laporanBelum',
+            'laporanSudah',
+            'jumlahNotifikasi'
         ));
     }
 
@@ -45,8 +62,17 @@ class DashboardController extends Controller
     public function exportPdf()
     {
         $pengaduan = Pengaduan::with(['masyarakat', 'tanggapan.petugas'])->get();
-        $pdf = Pdf::loadView('admin.laporan.pdf', compact('pengaduan'))
-            ->setPaper('a4', 'landscape');
+
+        $jumlahSelesai = Pengaduan::where('status', 'selesai')->count();
+        $jumlahProses = Pengaduan::where('status', 'proses')->count();
+        $jumlahBelum = Pengaduan::where('status', '0')->count();
+
+        $pdf = Pdf::loadView('admin.laporan.pdf', compact(
+            'pengaduan',
+            'jumlahSelesai',
+            'jumlahProses',
+            'jumlahBelum'
+        ))->setPaper('a4', 'landscape');
 
         return $pdf->download('laporan-pengaduan.pdf');
     }
@@ -55,4 +81,12 @@ class DashboardController extends Controller
     {
         return Excel::download(new LaporanExport, 'laporan-pengaduan.xlsx');
     }
+
+    public function boot()
+{
+    View::composer('admin.includes.header', function ($view) {
+        $jumlahNotif = Pengaduan::where('status', '0')->count();
+        $view->with('jumlahNotif', $jumlahNotif);
+    });
+}
 }

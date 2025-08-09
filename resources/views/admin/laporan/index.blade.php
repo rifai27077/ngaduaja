@@ -8,7 +8,6 @@
 </div>
 
 
-<!-- Tombol Export -->
 <div class="flex gap-3 mb-4">
     <a href="{{ route('admin.laporan.export.pdf', request()->only(['start_date', 'end_date'])) }}" 
         class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
@@ -20,7 +19,6 @@
     </a>
 </div>
 
-<!-- Tabel Laporan -->
 <div class="bg-white rounded-xl shadow-sm p-6">
     <h3 class="text-lg font-semibold text-gray-800 mb-4">Laporan Pengaduan</h3>
     <div class="overflow-x-auto">
@@ -46,7 +44,9 @@
                                 {{ $laporan->status == '0' ? 'Belum Ditanggapi' : ucfirst($laporan->status) }}
                             </span>
                         </td>
-                        <td class="py-3 px-4">{{ optional(optional($laporan->tanggapan)->petugas)->nama ?? '-' }}</td>
+                        <td class="py-3 px-4">
+                            {{ $laporan->tanggapan ? ($laporan->tanggapan->petugas->nama_petugas ?? '-') : 'Belum Ditanggapi' }}
+                        </td>
                     </tr>
                 @empty
                     <tr>

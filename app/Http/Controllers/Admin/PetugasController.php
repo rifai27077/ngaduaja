@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Petugas;
 
-
 class PetugasController extends Controller
 {
     public function index()
@@ -17,18 +16,19 @@ class PetugasController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
             'nama_petugas' => 'required|string|max:35',
-            'username' => 'required|string|max:25|unique:petugas,username',
+            'username' => 'required|string|max:25',
             'password' => 'required|string|min:6',
             'telp' => 'required|string|max:13',
             'level' => 'required|in:admin,petugas',
         ]);
 
+        // Simpan data
         Petugas::create([
             'nama_petugas' => $request->nama_petugas,
             'username' => $request->username,
-            // Password disimpan tanpa hash
             'password' => $request->password,
             'telp' => $request->telp,
             'level' => $request->level,
@@ -46,9 +46,10 @@ class PetugasController extends Controller
     public function update(Request $request, $id)
     {
         $petugas = Petugas::findOrFail($id);
+
         $request->validate([
             'nama_petugas' => 'required|string|max:35',
-            'username' => 'required|string|max:25|unique:petugas,username,' . $petugas->id_petugas . ',id_petugas',
+            'username' => 'required|string|max:25',
             'telp' => 'required|string|max:13',
             'level' => 'required|in:admin,petugas',
         ]);
@@ -69,5 +70,4 @@ class PetugasController extends Controller
         Petugas::findOrFail($id)->delete();
         return redirect()->route('petugas.index')->with('success', 'Petugas berhasil dihapus.');
     }
-
 }

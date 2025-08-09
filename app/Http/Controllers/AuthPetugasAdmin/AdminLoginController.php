@@ -11,7 +11,7 @@ class AdminLoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.admin-login'); // Buat view ini di resources/views/auth/
+        return view('auth.admin-login');
     }
 
     public function login(Request $request)
@@ -26,17 +26,18 @@ class AdminLoginController extends Controller
                         ->where('level', 'admin')
                         ->first();
 
-        if ($admin && password_verify($credentials['password'], $admin->password)) {
-            Auth::guard('petugas')->login($admin);
+        if ($admin && $admin->password === $credentials['password']) {
+            Auth::guard('admin')->login($admin); 
             return redirect()->route('admin.dashboard');
         }
+
 
         return back()->withErrors(['username' => 'Username atau password salah, atau Anda bukan admin.']);
     }
 
     public function logout(Request $request)
     {
-        Auth::guard('petugas')->logout();
+        Auth::guard('admin')->logout();
         return redirect()->route('admin.login')->with('success', 'Anda telah logout.');
     }
 }

@@ -3,7 +3,6 @@
 @section('title', 'Verifikasi Laporan')
 
 @section('content')
-    <!-- Modal Detail Laporan -->
     <div id="modal-detail" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center px-4">
         <div class="bg-white rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 relative">
             <button onclick="document.getElementById('modal-detail').classList.add('hidden')"
@@ -36,7 +35,6 @@
         </div>
     </div>
 
-    <!-- Modal Zoom Foto -->
     <div id="modal-zoom-foto" class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden flex items-center justify-center px-4">
         <div class="relative">
             <button onclick="document.getElementById('modal-zoom-foto').classList.add('hidden')"
@@ -45,13 +43,11 @@
         </div>
     </div>
 
-    <!-- Header -->
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Verifikasi Laporan</h2>
+        <h2 class="text-2xl font-bold text-gray-800">Verifikasi & Tanggapan Laporan</h2>
     </div>
 
-    <!-- Search & Filter -->
-    <div class="flex flex-wrap gap-4 mb-4">
+    {{-- <div class="flex flex-wrap gap-4 mb-4">
         <input type="text" placeholder="Cari nama atau NIK pelapor..."
             class="border border-gray-300 rounded-md px-4 py-2 text-sm w-full md:w-1/3">
         <select class="border border-gray-300 rounded-md px-3 py-2 text-sm w-full md:w-1/5">
@@ -61,9 +57,8 @@
             <option value="selesai">Selesai</option>
         </select>
         <input type="date" class="border border-gray-300 rounded-md px-3 py-2 text-sm w-full md:w-1/5">
-    </div>
+    </div> --}}
 
-    <!-- Tabel Laporan -->
     <div class="bg-white rounded-xl shadow-sm p-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Daftar Laporan</h3>
         <div class="overflow-x-auto">
@@ -158,10 +153,12 @@
                     @method('PUT')
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                        <select name="status" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" required>
+                        <select name="status" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" 
+                            @if($laporan->status == 'selesai') disabled @endif required>
                             <option value="proses" {{ $laporan->status == 'proses' ? 'selected' : '' }}>Proses</option>
                             <option value="selesai" {{ $laporan->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
                         </select>
+
                     </div>
                     <div class="flex justify-end gap-2">
                         <button type="button" onclick="document.getElementById('modal-verif-{{ $laporan->id_pengaduan }}').classList.add('hidden')" class="px-4 py-2 text-sm border rounded-md hover:bg-gray-100">Batal</button>
