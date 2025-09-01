@@ -27,7 +27,7 @@ class RegisterController extends Controller
             'nik' => $request->nik,
             'nama' => $request->nama,
             'username' => $request->username,
-            'password' => $request->password, // TANPA HASH
+            'password' => $request->password,
             'telp' => $request->telp,
         ]);
 

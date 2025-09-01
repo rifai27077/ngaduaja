@@ -48,6 +48,55 @@
     </div>
 </section>
 
+@if(auth()->check() && count($laporanSaya) > 0)
+<section class="bg-gray-50 py-12">
+    <div class="text-center mb-8 px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Laporan Anda</h2>
+        <p class="text-gray-600 text-sm md:text-base max-w-xl mx-auto">
+            Berikut adalah laporan yang telah Anda kirim beserta status dan tanggapannya.
+        </p>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 space-y-6">
+        @foreach ($laporanSaya as $laporan)
+            <div class="bg-white p-4 rounded-md shadow-sm border">
+                <div class="flex justify-between items-center mb-2">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">{{ $laporan->judul ?? 'Laporan' }}</h4>
+                        <span class="text-sm text-gray-500">
+                            {{ $laporan->created_at->format('d M Y') }}
+                        </span>
+                    </div>
+                    <span class="text-xs font-medium
+                        @if($laporan->status == '0') text-gray-600
+                        @elseif($laporan->status == 'proses') text-yellow-700
+                        @elseif($laporan->status == 'selesai') text-green-700
+                        @endif">
+                        @if($laporan->status == '0') Belum Diverifikasi
+                        @elseif($laporan->status == 'proses') Sedang Diproses
+                        @elseif($laporan->status == 'selesai') Selesai
+                        @endif
+                    </span>
+                </div>
+
+                <p class="text-gray-700 text-sm mb-3">{{ $laporan->isi_laporan }}</p>
+
+                @if($laporan->status == 'selesai' && $laporan->tanggapan)
+                    <div class="bg-green-50 p-3 rounded-md border border-green-200 text-sm text-green-800">
+                        <strong>Tanggapan Petugas:</strong> {{ $laporan->tanggapan->tanggapan }}
+                    </div>
+                @elseif($laporan->status == 'proses')
+                    <p class="text-xs text-yellow-700 italic">Laporan Anda sedang diproses oleh petugas.</p>
+                @else
+                    <p class="text-xs text-gray-500 italic">Menunggu verifikasi petugas.</p>
+                @endif
+            </div>
+        @endforeach
+    </div>
+</section>
+@endif
+
+
 <section id="laporanterbaru" class="bg-white py-16 relative overflow-hidden">
     @foreach ($blurs as $index => $blur)
         <div class="absolute {{ $blur['pos'] }} w-44 h-44 {{ $blur['color'] }}
