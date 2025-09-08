@@ -4,7 +4,7 @@
             <div class="flex-shrink-0">
                 <a href="{{ url('/') }}" class="flex items-center space-x-2">
                     <img src="/img/logo.png" alt="Logo" class="h-8 w-8">
-                    <span class="font-bold text-lg text-gray-800">Pengaduan Masyarakat</span>
+                    <span class="font-bold text-lg text-gray-800">NgaduAja</span>
                 </a>
             </div>
 

@@ -4,7 +4,7 @@
         <div class="space-y-2">
             <div class="flex items-center space-x-2">
                 <img src="/img/logo.png" alt="Logo" class="h-6 w-6">
-                <span class="font-semibold text-gray-800">Pengaduan Masyarakat</span>
+                <span class="font-semibold text-gray-800">NgaduAja</span>
             </div>
             <p class="text-xs">&copy; 2024 All rights reserved</p>
             <div class="flex space-x-3 mt-2 text-lg">
