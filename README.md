@@ -1,7 +1,8 @@
 ## 📷 Tampilan Aplikasi
 
 ### Landing Page
-![Landing Page](public/img/landing.png)
+![Landing Page](public/img/landing1.png)
+![Landing Page](public/img/landing2.png)
 
 ### Form Laporan Pengaduan
 ![Landing Page](public/img/formLaporan.png)
